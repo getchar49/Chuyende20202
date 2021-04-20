@@ -1,0 +1,2 @@
+const {Components} = React;
+ReactDOM.
