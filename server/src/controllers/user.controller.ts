@@ -75,7 +75,58 @@ const removePreviousImg = avatarurl => {
 };
 
 
+export default {
+  getUser: async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.params;
+      const user = await models.User.findOne({
+        where: {
+          id: userId
+        },
+        raw: true
+      });
+      res.status(200).send({
+        meta: {
+          type: "sucesss",
+          status: 200,
+          message: ""
+        },
+        user: userSummary(user)
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        meta: {
+          type: "error",
+          status: 500,
+          message: "server error"
+        }
+      });
+    }
+  },
+  getAllUsers: async (req: Request, res: Response) => {
+    try {
+      let userList: any = await models.User.findAll({ raw: true });
+      userList = userList.map(user => userSummary(user));
+      res.status(200).send({
+        meta: {
+          type: "sucess",
+          status: 200,
+          message: "all"
+        },
+        userList: userList
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        meta: {
+          type: "error",
+          status: 500,
+          message: "server error"
+        }
+      });
+    }
+  },
 
 
-
-
+};
