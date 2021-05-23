@@ -3,7 +3,6 @@ import * as randomstring from "randomstring";
 import { Request, Response } from "express";
 import * as _ from "lodash";
 
-
 const validateUploadFiles = data => {
   if (data.size > 1024 * 1024 * 5) {
     return { size: false };
