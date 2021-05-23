@@ -39,6 +39,43 @@ const comparePassword = async function(credentialsPassword, userPassword) {
   return isPasswordMatch;
 };
 
+const generateRandomImg = () => {
+  /* generate random icon for user */
+  const avatarData = new Identicon(randomHex(16), 420).toString();
+  const avatarBase64Img = `data:image/png;base64,${avatarData}`;
+  return avatarBase64Img;
+};
+
+const saveBase64Img = async avatarBase64Img => {
+  /* generate random icon for user */
+  const avatarImage = avatarBase64Img.split(";base64,").pop();
+
+  const avatarName = randomstring.generate().concat(".png");
+  const filePath = `./assets/${avatarName}`;
+
+  await fse.outputFile(filePath, avatarImage, { encoding: "base64" });
+
+  let avatarurl = `${SERVER_URL}:${SERVER_PORT}/assets/${avatarName}`;
+
+  //assume port would be 80 for production build
+  if (NODE_ENV === "production") {
+    avatarurl = `${SERVER_URL}/assets/${avatarName}`;
+  }
+  return avatarurl;
+};
+
+const removePreviousImg = avatarurl => {
+  const urlBeginIndex = avatarurl.indexOf("/assets/");
+  const localUrl = avatarurl.slice(urlBeginIndex);
+
+  fse.remove(`.${localUrl}`, err => {
+    if (err) throw err;
+    console.log(`${localUrl} was deleted`);
+  });
+};
+
+
+
 
 
 
