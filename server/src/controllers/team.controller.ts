@@ -106,5 +106,93 @@ export default {
         }
       });
     }
+  },
+  addTeamMember: async teamData => {
+    try {
+      const { targetUsername, teamId } = teamData;
+
+      const userToAdd = await models.User.findOne({
+        where: { username: targetUsername },
+        raw: true
+      });
+      if (!userToAdd) {
+        return {
+          meta: {
+            type: "error",
+            status: 403,
+            message: "user does not exist"
+          }
+        };
+      }
+
+      /* join all public channels */
+      const publicChannelList = await models.sequelize.query(
+        queries.getPublicChannelList,
+        {
+          replacements: [teamId],
+          model: models.Channel,
+          raw: true
+        }
+      );
+      const publicChannelListMember = publicChannelList.map(channel => ({
+        user_id: userToAdd.id,
+        channel_id: channel.id
+      }));
+
+      /* create new member  */
+      await models.sequelize.transaction(async transaction => {
+        await models.TeamMember.create(
+          { user_id: userToAdd.id, team_id: teamId },
+          { transaction }
+        );
+
+        /* create channel member relation for all public channels */
+        await models.ChannelMember.bulkCreate(publicChannelListMember, {
+          transaction
+        });
+        // remove stale data from cache
+        redisCache.delete(`teamMemberList:${teamId}`);
+        publicChannelList.forEach(element => {
+          redisCache.delete(`channelMemberList:${element.id}`);
+        });
+      });
+
+      /*  get team and channel member list */
+      const teamMemberList = await models.sequelize.query(
+        queries.getTeamMemberList,
+        {
+          replacements: [teamId],
+          model: models.User,
+          raw: true
+        }
+      );
+      const channelMemberList = await models.sequelize.query(
+        queries.getChannelMemberList,
+        {
+          replacements: [publicChannelList[0].id],
+          model: models.User,
+          raw: true
+        }
+      );
+
+      return {
+        meta: {
+          type: "success",
+          status: 200,
+          message: ""
+        },
+        teamMemberList,
+        channelMemberList
+      };
+    } catch (err) {
+      console.log(err);
+      return {
+        meta: {
+          type: "error",
+          status: 500,
+          message: "server error"
+        }
+      };
+    }
   } 
 };
