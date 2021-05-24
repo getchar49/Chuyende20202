@@ -7,16 +7,22 @@ import * as bcrypt from "bcryptjs";
 import axios from "axios";
 import { Request, Response } from "express";
 
-// import { redisCache, queries } from "./common";
+import { redisCache, queries } from "./common";
 import models from "../models";
-
+import {
+  SERVER_URL,
+  SERVER_PORT,
+  NODE_ENV,
+  GOOGLE_CLIENT_ID,
+  FACEBOOK_CLIENT_ID,
+  FACEBOOK_CLIENT_SECRET
+} from "../utils/secrets";
 
 declare module 'express-session' {
   export interface SessionData {
     user: { [key: string]: any };
   }
 }
-
 
 const userSummary = user => {
   const summary = {
@@ -38,6 +44,11 @@ const comparePassword = async function(credentialsPassword, userPassword) {
   );
   return isPasswordMatch;
 };
+
+
+------------------------------
+
+
 
 const generateRandomImg = () => {
   /* generate random icon for user */
@@ -74,6 +85,25 @@ const removePreviousImg = avatarurl => {
   });
 };
 
+
+---------------------------------
+const generateInitialDemoTeam = async () => {
+  await models.Team.create({
+    name: "Demo Team",
+    brief_description: "New users join this team for demo purposes"
+  });
+  const initialTeamData = await models.Team.findAll({ raw: true });
+  const newChannel: any = {
+    name: "general",
+    brief_description: "Company-wide announcements and work-based matters",
+    detail_description:
+      "This channel is for workspace-wide communication and announcements. All members are in this channel.",
+    public: true
+  };
+  newChannel.team_id = initialTeamData[0].id;
+  await models.Channel.create(newChannel);
+  return initialTeamData;
+};
 
 export default {
   getUser: async (req: Request, res: Response) => {
@@ -127,6 +157,7 @@ export default {
       });
     }
   },
+----------------
   signInOauth: async (req: Request, res: Response) => {
     try {
       const credentials = req.body;
@@ -579,5 +610,99 @@ export default {
       });
     }
   },
+  updateUser: async (req: any, res: Response) => {
+    try {
+      const currentUserId = req.user.id;
+      const {
+        brief_description,
+        detail_description,
+        password,
+        imgFile,
+        newPassword
+      } = req.body;
+
+      if (newPassword) {
+        const user = await models.User.findOne({
+          where: { id: currentUserId }
+        });
+
+        const isPasswordValid = await comparePassword(password, user.password);
+        if (!isPasswordValid) {
+          return res.status(403).send({
+            meta: {
+              type: "error",
+              status: 403,
+              message: "invalid password"
+            }
+          });
+        }
+      }
+      let avatarurl;
+
+      // if user uploads avatar img, save it and remove previous avatar
+      if (imgFile) {
+        avatarurl = await saveBase64Img(imgFile);
+        const user = await models.User.findOne({
+          where: {
+            id: currentUserId
+          },
+          raw: true
+        });
+        removePreviousImg(user.avatarurl);
+        await models.sequelize.query(queries.updateMessageUseravatar, {
+          replacements: { userId: currentUserId, newurl: avatarurl },
+          model: models.Channel,
+          raw: true
+        });
+      }
+      // remove stale data from cache
+      redisCache.delete(`userId:${currentUserId}`);
+
+      // remove empty field
+      let updatedUserData: any = {
+        avatarurl,
+        brief_description,
+        detail_description,
+        password: newPassword
+      };
+      updatedUserData = _.pickBy(updatedUserData, _.identity);
+
+      /* conditions are validated, update the user */
+      await models.User.update(
+        {
+          ...updatedUserData
+        },
+        {
+          where: {
+            id: currentUserId
+          },
+          individualHooks: true
+        }
+      );
+      const updatedUser = await models.User.findOne({
+        where: {
+          id: currentUserId
+        }
+      });
+
+      res.status(200).send({
+        meta: {
+          type: "success",
+          status: 200,
+          message: ""
+        },
+        user: userSummary(updatedUser)
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        meta: {
+          type: "error",
+          status: 500,
+          message: "server error"
+        }
+      });
+    }
+  }
 
 };
