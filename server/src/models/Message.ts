@@ -46,3 +46,16 @@ export const MessageFactory = (
     "message",
     attributes
   );
+
+  Message.associate = models => {
+    // 1:M
+    Message.belongsTo(models.Channel, {
+      foreignKey: { name: "channel_id", field: "channel_id" }
+    });
+    Message.belongsTo(models.User, {
+      foreignKey: { name: "user_id", field: "user_id" }
+    });
+  };
+
+  return Message;
+};
