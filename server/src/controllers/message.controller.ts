@@ -131,6 +131,59 @@ export default {
         }
       };
     }
+  },
+  getMessage: async (req: any, res: Response) => {
+    try {
+      const currentUserId = req.user.id;
+      const { channelId } = req.params;
+      const { offset } = req.query;
+
+      const channel = await models.Channel.findOne({
+        raw: true,
+        where: { id: channelId }
+      });
+
+      if (!channel.public) {
+        const member = await models.ChannelMember.findOne({
+          raw: true,
+          where: { channel_id: channelId, user_id: currentUserId }
+        });
+        if (!member) {
+          res.status(403).send({
+            meta: {
+              type: "error",
+              status: 403,
+              message: "Not Authorized"
+            }
+          });
+        }
+      }
+
+      const messageList = await models.Message.findAll({
+        order: [["created_at", "DESC"]],
+        where: { channel_id: channelId },
+        limit: 30,
+        offset,
+        raw: true
+      });
+
+      return res.status(200).send({
+        meta: {
+          type: "success",
+          status: 200,
+          message: ""
+        },
+        messageList: messageList.reverse()
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        meta: {
+          type: "error",
+          status: 500,
+          message: "server error"
+        }
+      });
+    }
   }
-}
-  
+};
