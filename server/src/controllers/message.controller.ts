@@ -3,6 +3,10 @@ import * as randomstring from "randomstring";
 import { Request, Response } from "express";
 import * as _ from "lodash";
 
+import { SERVER_URL, SERVER_PORT } from "../utils/secrets";
+import models from "../models";
+import { redisCache } from "./common";
+
 const validateUploadFiles = data => {
   if (data.size > 1024 * 1024 * 5) {
     return { size: false };
@@ -90,6 +94,43 @@ export default {
           }
         };
       }
+
+      /* generate random name */
+      const randomFileName = generateFileName(file);
+
+      const filePath = `./assets/${randomFileName}`;
+
+      /* write file and create message */
+      await fse.outputFile(filePath, file.data);
+
+      const messageResponse = await models.Message.create({
+        channel_id: channelId,
+        user_id: userId,
+        avatarurl,
+        username,
+        filetype: file.type,
+        url: `${SERVER_URL}:${SERVER_PORT}/assets/${randomFileName}`
+      });
+
+      const message = messageResponse.get({ plain: true });
+      return {
+        meta: {
+          type: "success",
+          status: 200,
+          message: ""
+        },
+        message
+      };
+    } catch (err) {
+      console.log(err);
+      return {
+        meta: {
+          type: "error",
+          status: 500,
+          message: "server error"
+        }
+      };
     }
   }
 }
+  
