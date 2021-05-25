@@ -6,5 +6,9 @@ export default io => {
       const response = await messageController.createMessage(data);
       io.emit("message-receive", response);
     });
+    socket.on("team-new-member", async data => {
+      const response = await teamController.addTeamMember(data);
+      io.emit("team-receive-new-member", response);
+    });
   });
 };
