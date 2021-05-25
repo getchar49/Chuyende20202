@@ -1,0 +1,34 @@
+[
+  {
+    "username": "admin",
+    "email": "admin@email.com",
+    "password": "1111",
+    "brief_description": "Aloha World!",
+    "detail_description": "about myself, I am not a person who likes to fish. I write code when I don't fish",
+    "avatarurl": "https://i.imgur.com/RrMFWtA.png"
+  },
+  {
+    "username": "test",
+    "email": "test@email.com",
+    "password": "1111",
+    "brief_description": "Ni Hao World!",
+    "detail_description": "Front End Tech lead of Googal",
+    "avatarurl": "https://i.imgur.com/1E7xL4Z.png"
+  },
+  {
+    "username": "test2",
+    "email": "test2@email.com",
+    "password": "1111",
+    "brief_description": "Ohio World!",
+    "detail_description": "having bacon for breakfast everyday is the best thing in the world",
+    "avatarurl": "https://i.imgur.com/1RGR3nv.png"
+  },
+  {
+    "username": "test3",
+    "email": "test3@email.com",
+    "password": "1111",
+    "brief_description": "Hello World!",
+    "detail_description": "what is the distance from earth to the sun?",
+    "avatarurl": "https://i.imgur.com/1aehGSR.png"
+  }
+]
