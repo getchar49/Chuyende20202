@@ -1,0 +1,17 @@
+@import "../../../../assets/css/vars.scss";
+.status-bubble-on {
+  user-select: none;
+  padding-right: 3px;
+  color: $bubblegreen;
+  &--light {
+    color: $lightbubblegreen;
+  }
+}
+.status-bubble-off {
+  user-select: none;
+  padding-right: 3px;
+  color: $superlightgrey;
+  &--dark {
+    color: $darkgrey;
+  }
+}

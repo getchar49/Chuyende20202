@@ -1,0 +1,40 @@
+@import "../../../assets/css/vars.scss";
+
+/* Header Component */
+
+.main-header {
+  /* autoprefixer: off */
+  font-size: 1.4rem;
+  font-weight: 900;
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 10px 0 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  &__title {
+    &__name {
+      margin: 0;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    &__sub-header {
+      padding: 0 5px 5px 0;
+      font-size: 15px;
+      font-weight: 300;
+      color: $darkgrey;
+      &__icon {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      &__number {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
