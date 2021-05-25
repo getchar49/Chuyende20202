@@ -1,0 +1,116 @@
+@import "../../../assets/css/vars";
+
+/* leftsidebar Component */
+.leftsidebar {
+  /* autoprefixer: off */
+  grid-column: 1;
+  grid-row: 1/4;
+  overflow-y: auto;
+  background-color: $purple;
+  color: $superlightgrey;
+  &__header {
+    &__top {
+      user-select: none;
+      padding: 15px 0px 10px $paddingLeft;
+      &:hover {
+        background: $darkpurple;
+        cursor: pointer;
+      }
+      &__teamname {
+        font-size: 20px;
+        padding: 0px;
+        margin: 0px;
+        color: $white;
+        margin-bottom: 5px;
+      }
+    }
+    user-select: none;
+    &__bottom {
+      padding: 15px 0px 10px $paddingLeft;
+      display: flex;
+      &:hover {
+        background: $darkpurple;
+        cursor: pointer;
+      }
+      &__left {
+        &__avatar {
+          width: 40px;
+          border-radius: 2%;
+        }
+      }
+      &__right {
+        margin-left: 10px;
+        &__username {
+          color: $superlightgrey;
+          font-size: 20px;
+          padding: 0px;
+          margin: 0px;
+          padding-bottom: 3px;
+        }
+      }
+    }
+  }
+  &__List {
+    width: 100%;
+    list-style: none;
+    padding-left: $paddingLeft;
+    &__bubble {
+      padding-right: 3px;
+    }
+    &__header {
+      color: $white;
+      font-size: 14px;
+      padding: 0;
+      &__title {
+        padding-right: 120px;
+        &--closer {
+          padding-right: 76px;
+        }
+      }
+    }
+    &__link {
+      &:focus,
+      &:active & {
+        text-decoration: none;
+      }
+      &__item {
+        padding: 3px;
+        font-size: 15px;
+        padding-left: 5px;
+        &:hover {
+          background: $darkpurple;
+        }
+        &--link {
+          color: $superlightgrey;
+        }
+        &__num {
+          padding: 0 3px;
+          font-size: 0.8em;
+          border-radius: 15%;
+          background-color: $superlightgrey;
+          color: $purple;
+        }
+      }
+    }
+  }
+}
+
+.invite-people-button {
+  padding: 15px 0px 10px $paddingLeft;
+  color: $white;
+  &:hover {
+    background: $darkpurple;
+    cursor: pointer;
+  }
+  &__plus {
+    font-size: 16px;
+  }
+}
+
+.plus-icon {
+  color: $white;
+  font-size: 14px;
+  &:hover {
+    cursor: pointer;
+  }
+}
