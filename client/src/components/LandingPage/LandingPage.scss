@@ -1,0 +1,64 @@
+@import "../../assets/css/vars.scss";
+
+.landing-page {
+  padding: 30px;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+}
+
+.landing-header {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  &--red {
+    color: $slack-teal;
+  }
+  &--teal {
+    color: $slack-red;
+  }
+  &--yellow {
+    color: $slack-green;
+  }
+  &--green {
+    color: $slack-yellow;
+  }
+}
+
+.landing-href-group {
+  width: 300px;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.landing-desc {
+  &__header {
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  &__detail {
+    font-weight: 600;
+    &__tech-stack {
+      padding: 5px;
+      max-width: 850px;
+      margin-bottom: 20px;
+      margin-left: 15px;
+
+      &__client {
+        background-color: $verylightgrey;
+        padding: 5px;
+      }
+      &__server {
+        background-color: $verylightgrey;
+        padding: 5px;
+      }
+    }
+    &__user-story {
+      padding: 5px;
+      margin-left: 15px;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+  }
+}
