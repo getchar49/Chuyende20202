@@ -2,9 +2,6 @@ import actionTypes from "@/actionTypes";
 import { teamService } from "./services";
 
 export default {
-  /**
-   * Local
-   */
   switchTeam: teamId => async dispatch => {
     dispatch({
       type: actionTypes.TEAM_SWITCH,
@@ -12,9 +9,7 @@ export default {
     });
   },
 
-  /**
-   * fetch API with Axios
-   */
+
   fetchCreateTeam: teamFormInfo => async dispatch => {
     dispatch({
       type: actionTypes.TEAM_FETCH_CREATE
@@ -75,14 +70,12 @@ export default {
     }
   },
 
-  /**
-   * Web Socket with Socket.io
-   */
+
   emitSocketAddTeamMember: addMemberData => {
     teamService.emitSocketAddTeamMember(addMemberData);
   },
 
-  // pass in dispatch, let socket.io dispatch dispatchReceivedTeamMember when data is received
+
   receiveSocketNewTeamMember: () => dispatch => {
     teamService.receiveSocketNewTeamMember(dispatch);
   },

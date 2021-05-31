@@ -2,9 +2,6 @@ import actionTypes from "@/actionTypes";
 import { channelService } from "./services";
 
 export default {
-  /**
-   * Local
-   */
   switchChannel: channelId => async dispatch => {
     dispatch({
       type: actionTypes.CHANNEL_SWITCH,
@@ -12,9 +9,7 @@ export default {
     });
   },
 
-  /**
-   * fetch API with Axios
-   */
+
   fetchCreateChannel: channelFormInfo => async dispatch => {
     dispatch({
       type: actionTypes.CHANNEL_FETCH_CREATE

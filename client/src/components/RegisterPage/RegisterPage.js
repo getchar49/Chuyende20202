@@ -24,12 +24,10 @@ class RegisterPageContainer extends React.Component {
 
     const fieldErrors = fieldsValidation();
     if (formFields.password !== formFields.confirmPassword) {
-      // display error if confirm password does not match password
       updateFieldErrors({
         confirmPassword: "confirm password have to match with password"
       });
     }
-    // fetch login if there are no errors
     if (Object.keys(fieldErrors).length === 0) {
       fetchSignUpUser({
         username: formFields.username,

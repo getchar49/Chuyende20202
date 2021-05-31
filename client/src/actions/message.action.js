@@ -2,9 +2,6 @@ import actionTypes from "@/actionTypes";
 import { messageService } from "./services";
 
 export default {
-  /**
-   * fetch API with Axios
-   */
   fetchMoreMessage: currentMessageData => async dispatch => {
     dispatch({
       type: actionTypes.MESSAGE_FETCH_MORE
@@ -27,14 +24,10 @@ export default {
     }
   },
 
-  /**
-   * Web Socket with Socket.io
-   */
   emitSocketMessage: messageData => () => {
     messageService.emitSocketMessage(messageData);
   },
 
-  // pass in dispatch, let socket.io dispatch dispatchReceivedMessage when data is received
   receiveSocketMessage: () => dispatch => {
     messageService.receiveSocketMessage(dispatch);
   },

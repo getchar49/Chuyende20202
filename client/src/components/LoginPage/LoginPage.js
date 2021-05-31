@@ -22,7 +22,6 @@ class LoginPageContainer extends React.Component {
     } = this.props;
     const fieldErrors = fieldsValidation();
 
-    // fetch login if there are no errors
     if (Object.keys(fieldErrors).length === 0) {
       fetchSignInUser(formFields);
       clearAllError();

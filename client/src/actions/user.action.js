@@ -2,9 +2,6 @@ import actionTypes from "@/actionTypes";
 import { userService } from "./services";
 
 export default {
-  /**
-   * fetch API with Axios
-   */
   fetchTryAutoSignIn: () => async dispatch => {
     const response = await userService.fetchTryAutoSignIn();
     const { data } = response;

@@ -2,9 +2,6 @@ import actionTypes from "../actionTypes";
 import { globalStateService } from "./services";
 
 export default {
-  /**
-   * Local
-   */
   toggleRightSidebar: () => dispatch => {
     dispatch({
       type: actionTypes.GLOBAL_RIGHT_SIDEBAR_TOGGLE
@@ -23,9 +20,7 @@ export default {
     });
   },
 
-  /**
-   * Web Socket with Socket.io
-   */
+
   clearSocketConnection: () => dispatch => {
     globalStateService.clearSocketConnection();
     dispatch({
