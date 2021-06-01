@@ -3,16 +3,6 @@ import * as Sequelize from "sequelize";
 
 import { getNewId } from "./common";
 
-const hashPasswordIfChanged = async (user, options) => {
-  const SALT_FACTOR = 10;
-  if (user.changed("password")) {
-    const hashedPassword = await bcrypt.hash(user.password, SALT_FACTOR);
-    // eslint-disable-next-line
-    user.password = hashedPassword;
-    return hashedPassword;
-  }
-};
-
 export const UserFactory = (
   sequelize: Sequelize.Sequelize,
   DataTypes: Sequelize.DataTypes
@@ -28,11 +18,11 @@ export const UserFactory = (
       validate: {
         isAlphanumeric: {
           //args: true,
-          msg: "The username can only contain letters and numbers"
+          msg: "Tên chỉ được bao gồm chữ cái và số"
         },
         len: {
           args: [4, 127],
-          msg: "The username needs to be between 3 and 25 characteres long"
+          msg: "Số ký tự phải thuộc khoảng 3 - 25 ký tự"
         }
       }
     },
@@ -139,3 +129,15 @@ export const UserFactory = (
 
   return User;
 };
+
+const hashPasswordIfChanged = async (user, options) => {
+  const SALT_FACTOR = 10;
+  if (user.changed("password")) {
+    const hashedPassword = await bcrypt.hash(user.password, SALT_FACTOR);
+    // eslint-disable-next-line
+    user.password = hashedPassword;
+    return hashedPassword;
+  }
+};
+
+

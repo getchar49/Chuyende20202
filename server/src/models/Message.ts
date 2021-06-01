@@ -2,6 +2,11 @@ import * as Sequelize from "sequelize";
 
 import { getNewId } from "./common";
 
+
+
+
+
+
 export const MessageFactory = (
   sequelize: Sequelize.Sequelize,
   DataTypes: Sequelize.DataTypes
@@ -19,7 +24,7 @@ export const MessageFactory = (
       validate: {
         len: {
           args: [0, 1023],
-          msg: "The length cannot be longer than 1024 characters"
+          msg: "Số lý tự không vượt quá 1024"
         }
       }
     },
@@ -29,7 +34,7 @@ export const MessageFactory = (
       validate: {
         len: {
           args: [0, 9999],
-          msg: "The length cannot be longer than 10000 characters"
+          msg: "Số lý tự không vượt quá 10000 ký tự"
         }
       }
     },

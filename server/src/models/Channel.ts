@@ -28,7 +28,7 @@ export const ChannelFactory = (
       validate: {
         len: {
           args: [0, 127],
-          msg: "The length cannot be longer than 128 characters"
+          msg: "Số ký tựu không dài quá 128"
         }
       }
     },
